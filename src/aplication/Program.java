@@ -30,10 +30,12 @@ public class Program {
 				
 				Peça_xadrez capturaPeca = partida_xadrez.performance_mov(origem, destino);
 			}
+			//tratamento de exceções. Caso ocorra alguma exceção em exceção_xad, imprime msg na tela e aguarda o enter do usuário
 			catch (Exceção_xad e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();//aguardar o ENTER
 			}
+			//tratamento de exceções. Caso ocorra alguma exceção em InputMismatchException, imprime msg na tela e aguarda o enter do usuário
 			catch (InputMismatchException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();//aguardar o ENTER

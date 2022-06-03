@@ -4,7 +4,7 @@ import tabuleiro.Pecas;
 import tabuleiro.Tabuleiro;
 
 /*subclasse da classe peça*/
-public class Peça_xadrez extends Pecas  {
+public abstract class Peça_xadrez extends Pecas  {
 	
 	private Cor cor;
 

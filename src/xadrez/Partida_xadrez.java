@@ -55,6 +55,11 @@ public class Partida_xadrez {
 		if (!tabul.existe_peca(posicao)) {
 			throw new Exceção_xad ("Não existe peça na posição de origem!");
 		}
+		//testar se existe movimentos possiveis para a peça.
+		//Se não tiver nenhum movimento possivel, lança uma esceção:
+		if (!tabul.peca(posicao).existeMovPossivel()) {
+			throw new Exceção_xad("Não existe movimentos possíveis para a peça escolhida ");
+		}
 	}
 	
 	

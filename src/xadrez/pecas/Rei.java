@@ -16,6 +16,15 @@ public class Rei extends Peça_xadrez{
 		public String toString() {
 			return "R";
 		}
+
+		/*sempre que chamar os movimentos possiveis do REI 
+		 * vai retornar uma matriz com todas posições valendo falso(REI preso) 
+		 */
+		@Override
+		public boolean[][] movim_possiveis() {
+			boolean [][] matriz = new boolean [getTabul().getLinhas()][getTabul().getColunas()];
+			return matriz;
+		}
 	
 
 }
