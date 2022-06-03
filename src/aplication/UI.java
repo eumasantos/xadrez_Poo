@@ -29,6 +29,13 @@ public class UI {
 		public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 		public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 	
+		// https://stackoverflow.com/questions/2979383/java-clear-the-console
+		//metodo para limpar a tela
+		public static void clearScreen() {
+			System.out.print("\033[H\033[2J");
+			System.out.flush();
+		} 	
+		
 		//metodo para ler uma posição do usuário:
 	public static posicao_xadrez lerPosicaoXadrez(Scanner sc) {
 		
@@ -64,18 +71,9 @@ public class UI {
 		if (peca == null) {
 			System.out.print("-");
 		}
-<<<<<<< HEAD
-		//else {
-			//System.out.print(peca);
-		//}
-	//	System.out.print(" ");
-    	//if (peca == null) {
-          //  System.out.print("-");
-       // }
-        else {
-=======
+		
 		else {
->>>>>>> e0423a87d22d1158d045fc71256544b240a692df
+
         	//testar se a peça é branca ou preta
             if (peca.getCor() == Cor.WHITE) {
                 System.out.print(ANSI_WHITE + peca + ANSI_RESET);
