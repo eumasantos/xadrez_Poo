@@ -37,6 +37,8 @@ public class Partida_xadrez {
 		Posição destino = posicaoDestino.convert_posic();
 		//validando posição de origem(ver se realmente há peça nessa posição)
 		validarPosicaoOrigem(origem);
+		//validando posição de destino
+		validarPosicaoDestino(origem,destino);
 		//variavel que recebe o resultado do movimento:
 		Pecas capturaPeca = operacaoMovimentoPeca(origem, destino);
 		return (Peça_xadrez)capturaPeca;
@@ -50,7 +52,7 @@ public class Partida_xadrez {
 		return capturaPeca;
 	}
 	
-	//implementação da operaçao de validação:
+	//implementação da operaçao de validação de origem:
 	private void validarPosicaoOrigem (Posição posicao) {
 		if (!tabul.existe_peca(posicao)) {
 			throw new Exceção_xad ("Não existe peça na posição de origem!");
@@ -61,8 +63,13 @@ public class Partida_xadrez {
 			throw new Exceção_xad("Não existe movimentos possíveis para a peça escolhida ");
 		}
 	}
-	
-	
+	//implementação da operaçao de validação de destino:
+	private void validarPosicaoDestino(Posição origem, Posição destino) {
+		if (!tabul.peca(origem).movimPossivelPosic(destino)) {
+			throw new Exceção_xad ("A peça escolhida não pode ser mover para a posição de destino");
+		}
+			
+		}
 	//metodo que recebe as coordenadas do xadrez:
 	private void nova_peca(char coluna, int linha, Peça_xadrez peca) {
 		tabul.colocar_peca(peca, new posicao_xadrez(coluna, linha).convert_posic());
