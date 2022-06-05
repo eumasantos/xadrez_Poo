@@ -56,14 +56,14 @@ public class UI {
 		for (int i=0;  i<pecas.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j=0; j<pecas.length; j++) {
-				imprimiPeca(pecas[i][j], false);
+				imprimiPeca(pecas[i][j], false);//o false indica que nenhuma peça deve ter o fundo colorido
 			}
 			System.out.println();
 		}
 		//System.out.println("  a b c d e f g h");
 		System.out.println("  A B C D E F G H");	
 	}
-	
+	//metodo para imprimir a matriz de movimentos possiveis
 	public static void imprimiTabuleiro(Peça_xadrez[][]pecas, boolean [][]movim_possiveis ) {
 		for (int i=0;  i<pecas.length; i++) {
 			System.out.print((8 - i) + " ");
@@ -76,8 +76,8 @@ public class UI {
 		System.out.println("  A B C D E F G H");	
 	}
 	
-	private static void imprimiPeca(Peça_xadrez peca, boolean background) {
-		if (background) {
+	private static void imprimiPeca(Peça_xadrez peca, boolean background) {//variavel para definir se o fundo da tela deve ser colorido ou não
+		if (background) {//testa se a variável é verdadeira, se sim,muda o fundo para verde
 			System.out.print(ANSI_GREEN_BACKGROUND);
 		}
 		if (peca == null) {

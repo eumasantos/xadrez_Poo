@@ -26,6 +26,7 @@ public class Program {
 				
 				boolean[][]movim_possiveis = partida_xadrez.movim_possiveis(origem);
 				UI.clearScreen();
+				//sobrecarga para imprimir o tabuleiro mostrando (com a cor escolhida) os movimentos possiveis
 				UI.imprimiTabuleiro(partida_xadrez.getPecas(),movim_possiveis);
 				System.out.println();
 				System.out.print("Destino: ");

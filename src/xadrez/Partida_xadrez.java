@@ -30,7 +30,7 @@ public class Partida_xadrez {
 				}	
 				return matriz;
 	}
-	
+	//operação para mostrar os movimentos possiveis ao escolher uma origem
 	public boolean [][]movim_possiveis(posicao_xadrez posicaoOrigem){
 		Posição posicao = posicaoOrigem.convert_posic();
 		validarPosicaoOrigem(posicao);
