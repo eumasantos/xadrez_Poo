@@ -19,7 +19,8 @@ public class Program {
 		while (true) {
 			try {
 				UI.clearScreen();//para limpar a tela cada vez que executar o while
-				UI.imprimiTabuleiro(partida_xadrez.getPecas());
+			//	UI.imprimiTabuleiro(partida_xadrez.getPecas();
+				UI.imprimiPartida(partida_xadrez);
 				System.out.println();
 				System.out.print("Origem: ");
 				posicao_xadrez origem = UI.lerPosicaoXadrez(sc);

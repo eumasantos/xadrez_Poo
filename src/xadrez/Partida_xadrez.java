@@ -9,11 +9,25 @@ import xadrez.pecas.Torre;
 /* classe onde contem as regras do jogo*/
 public class Partida_xadrez {
 	private Tabuleiro tabul;
+	private int vez;//define de quem é a vez de jogar
+	private Cor jogadorAtual;
 	
+	//Construtor
 	public Partida_xadrez() {
 		tabul = new Tabuleiro(8,8);//criação da dimensao do tabuleiro
+		vez = 1;
+		jogadorAtual = Cor.BRANCA;//o primeiro a jogar são as peças brancas
 		iniciarPartida();//chamando a inicialização da partida
 		}
+	//apenas metodos gets pois esses atributos não podem ser alterados	
+	public int getVez() {
+		return vez;
+	}
+
+	public Cor getJogadorAtual() {
+		return jogadorAtual;
+	}
+	
 	/*O método abaixo retorna uma matriz de pecas de xadrez correspondente 
 	 * a uma partida
 	 */
@@ -30,6 +44,7 @@ public class Partida_xadrez {
 				}	
 				return matriz;
 	}
+
 	//operação para mostrar os movimentos possiveis ao escolher uma origem
 	public boolean [][]movim_possiveis(posicao_xadrez posicaoOrigem){
 		Posição posicao = posicaoOrigem.convert_posic();
@@ -48,6 +63,8 @@ public class Partida_xadrez {
 		validarPosicaoDestino(origem,destino);
 		//variavel que recebe o resultado do movimento:
 		Pecas capturaPeca = operacaoMovimentoPeca(origem, destino);
+		//chama o proximo jogador:
+		proximaVez();
 		return (Peça_xadrez)capturaPeca;
 	}
 	
@@ -64,6 +81,11 @@ public class Partida_xadrez {
 		if (!tabul.existe_peca(posicao)) {
 			throw new Exceção_xad ("Não existe peça na posição de origem!");
 		}
+	//	if (jogadorAtual != ((Peça_xadrez)tabul.peca(posicao)).getCor());
+		//	throw new Exceção_xad("Essa peça não é sua!");
+		if (jogadorAtual != ((Peça_xadrez)tabul.peca(posicao)).getCor()) {
+			throw new Exceção_xad("Essa peça não é sua!");
+		}
 		//testar se existe movimentos possiveis para a peça.
 		//Se não tiver nenhum movimento possivel, lança uma esceção:
 		if (!tabul.peca(posicao).existeMovPossivel()) {
@@ -77,6 +99,14 @@ public class Partida_xadrez {
 		}
 			
 		}
+	
+	//metodo que troca a "vez"
+	private void proximaVez() {
+		vez++; //incrementa a vez
+		//expressão para mudança de jogador:
+		jogadorAtual = (jogadorAtual == Cor.BRANCA) ? Cor.PRETA : Cor.BRANCA;
+	}
+	
 	//metodo que recebe as coordenadas do xadrez:
 	private void nova_peca(char coluna, int linha, Peça_xadrez peca) {
 		tabul.colocar_peca(peca, new posicao_xadrez(coluna, linha).convert_posic());
@@ -86,18 +116,18 @@ public class Partida_xadrez {
 	//metodo responsavel por iniciar a partida de xadrez, colocando as pecas no tabuleiro
 	private void iniciarPartida() {
 		
-		nova_peca('b', 6, new Torre(tabul, Cor.WHITE));//colcando uma nova peça em determinada posicao
-		nova_peca('e', 8, new Rei(tabul, Cor.BLACK)); 
-		nova_peca('e', 1, new Rei(tabul, Cor.WHITE));
-		nova_peca('c', 1, new Torre(tabul, Cor.WHITE));
-		nova_peca('c', 2, new Torre(tabul, Cor.WHITE));
-		nova_peca('d', 2, new Torre(tabul, Cor.WHITE));
-		nova_peca('e', 2, new Torre(tabul, Cor.WHITE));
-		nova_peca('d', 1, new Rei(tabul, Cor.WHITE));
-		nova_peca('c', 7, new Torre(tabul, Cor.BLACK));
-		nova_peca('c', 8, new Torre(tabul, Cor.BLACK));
-		nova_peca('d', 7, new Torre(tabul, Cor.BLACK));
-		nova_peca('e', 7, new Torre(tabul, Cor.BLACK));
+		nova_peca('b', 6, new Torre(tabul, Cor.BRANCA));//colcando uma nova peça em determinada posicao
+		nova_peca('e', 8, new Rei(tabul, Cor.PRETA)); 
+		nova_peca('e', 1, new Rei(tabul, Cor.BRANCA));
+		nova_peca('c', 1, new Torre(tabul, Cor.BRANCA));
+		nova_peca('c', 2, new Torre(tabul, Cor.BRANCA));
+		nova_peca('d', 2, new Torre(tabul, Cor.BRANCA));
+		nova_peca('e', 2, new Torre(tabul, Cor.BRANCA));
+		nova_peca('d', 1, new Rei(tabul, Cor.BRANCA));
+		nova_peca('c', 7, new Torre(tabul, Cor.PRETA));
+		nova_peca('c', 8, new Torre(tabul, Cor.PRETA));
+		nova_peca('d', 7, new Torre(tabul, Cor.PRETA));
+		nova_peca('e', 7, new Torre(tabul, Cor.PRETA));
 		//nova_peca('d', 8, new Rei(tabul, Cor.BLACK));
 		//nova_peca('e', 1, new Rei(tabul, Cor.WHITE));
 		//nova_peca('c', 1, new Torre(tabul, Cor.WHITE));
