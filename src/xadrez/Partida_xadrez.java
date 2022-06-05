@@ -30,6 +30,13 @@ public class Partida_xadrez {
 				}	
 				return matriz;
 	}
+	
+	public boolean [][]movim_possiveis(posicao_xadrez posicaoOrigem){
+		Posição posicao = posicaoOrigem.convert_posic();
+		validarPosicaoOrigem(posicao);
+		return tabul.peca(posicao).movim_possiveis();
+	}
+	
 	//metodo para mover peça de origem para destino
 	public Peça_xadrez performance_mov(posicao_xadrez posicaoOrigem, posicao_xadrez posicaoDestino) {
 		//convertendo as posições do xadrez para posição da matriz

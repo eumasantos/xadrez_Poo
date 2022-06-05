@@ -51,25 +51,37 @@ public class UI {
 			//exceção do java. Erro de entrada de dados. 
 			throw new InputMismatchException("Erro lendo a posição do xadrez. Valores válidos: são de A1 até H8");
 		}
-	}
-		
-		
+	}	
 	public static void imprimiTabuleiro(Peça_xadrez[][]pecas) {
 		for (int i=0;  i<pecas.length; i++) {
 			System.out.print((8 - i) + " ");
 			for (int j=0; j<pecas.length; j++) {
-				imprimiPeca(pecas[i][j]);
+				imprimiPeca(pecas[i][j], false);
 			}
 			System.out.println();
 		}
 		//System.out.println("  a b c d e f g h");
-		System.out.println("  A B C D E F G H");
-		
+		System.out.println("  A B C D E F G H");	
 	}
 	
-	private static void imprimiPeca(Peça_xadrez peca) {
+	public static void imprimiTabuleiro(Peça_xadrez[][]pecas, boolean [][]movim_possiveis ) {
+		for (int i=0;  i<pecas.length; i++) {
+			System.out.print((8 - i) + " ");
+			for (int j=0; j<pecas.length; j++) {
+				imprimiPeca(pecas[i][j], movim_possiveis[i][j]);
+			}
+			System.out.println();
+		}
+		//System.out.println("  a b c d e f g h");
+		System.out.println("  A B C D E F G H");	
+	}
+	
+	private static void imprimiPeca(Peça_xadrez peca, boolean background) {
+		if (background) {
+			System.out.print(ANSI_GREEN_BACKGROUND);
+		}
 		if (peca == null) {
-			System.out.print("-");
+			System.out.print("-" + ANSI_RESET);
 		}
 		
 		else {
