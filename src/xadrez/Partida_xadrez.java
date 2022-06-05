@@ -2,6 +2,7 @@ package xadrez;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import tabuleiro.Pecas;
 import tabuleiro.Posição;
@@ -15,6 +16,7 @@ public class Partida_xadrez {
 	private Tabuleiro tabul;
 	private int vez;//define de quem é a vez de jogar
 	private Cor jogadorAtual;
+	private boolean Xeque;
 	
 	//declaração das listas para pelas no tabuleiro e peças capturadas:
 	private List<Pecas> pecasNoTabul = new ArrayList<>();
@@ -25,6 +27,7 @@ public class Partida_xadrez {
 		tabul = new Tabuleiro(8,8);//criação da dimensao do tabuleiro
 		vez = 1;
 		jogadorAtual = Cor.BRANCA;//o primeiro a jogar são as peças brancas
+		Xeque = false; //opcional. por padrão já é falso
 		iniciarPartida();//chamando a inicialização da partida
 		}
 	//apenas metodos gets pois esses atributos não podem ser alterados	
@@ -34,6 +37,10 @@ public class Partida_xadrez {
 
 	public Cor getJogadorAtual() {
 		return jogadorAtual;
+	}
+	
+	public boolean getXeque() {
+		return Xeque;
 	}
 	
 	/*O método abaixo retorna uma matriz de pecas de xadrez correspondente 
@@ -72,6 +79,15 @@ public class Partida_xadrez {
 		//variavel que recebe o resultado do movimento:
 		Pecas capturaPeca = operacaoMovimentoPeca(origem, destino);
 		//chama o proximo jogador:
+		
+		//testar se o movimento colocou o jogador em xeque:
+		if (testeXeque (jogadorAtual)) {
+			desfazerMovim(origem, destino, capturaPeca);
+			throw new Exceção_xad("Você não pode se colocar em xeque!");
+		}
+		//testar se o oponente se colocou em xeque
+		Xeque = (testeXeque(oponente(jogadorAtual))) ? true : false;
+		
 		proximaVez();
 		return (Peça_xadrez)capturaPeca;
 	}
@@ -91,6 +107,18 @@ public class Partida_xadrez {
 		}
 		
 		return capturaPeca;
+	}
+	//metodo para desfazer movimento
+	private void desfazerMovim(Posição origem, Posição destino, Pecas capturaPeca ) {
+		Pecas p = tabul.remover_Peca(destino);//tira peça de destino
+		tabul.colocar_peca(p, origem);//devolve para posição de origem
+		
+		//testa se a peça tinha sido capturada, se sim, volta para posição de destino
+		if (capturaPeca != null) {
+			tabul.colocar_peca(capturaPeca, destino);//volta a peça para o tabuleiro na posição de destino
+			pecasCapturadas.remove(capturaPeca);//tirar a peça da lista de capturadas e colocar na lista do tabuleiro:
+			pecasNoTabul.add(capturaPeca);
+		}
 	}
 	
 	//implementação da operaçao de validação de origem:
@@ -123,6 +151,36 @@ public class Partida_xadrez {
 		//expressão para mudança de jogador:
 		jogadorAtual = (jogadorAtual == Cor.BRANCA) ? Cor.PRETA : Cor.BRANCA;
 	}
+	//metodo para devolver o oponente de um cor
+	private Cor oponente(Cor cor) {
+		return (cor == Cor.BRANCA) ? Cor.PRETA : Cor.BRANCA;	
+	}
+	//metodo para localizar um rei de determianda cor
+	private Peça_xadrez rei(Cor cor) {
+		List<Pecas> list = pecasNoTabul.stream().filter(x -> ((Peça_xadrez)x).getCor() == cor).collect(Collectors.toList());
+		for (Pecas p : list) {
+			if (p instanceof Rei) {
+			return (Peça_xadrez)p;
+			}
+		}
+		//se não encontrar nenhum rei, lança a seguinte exceção:
+		throw new IllegalStateException("Não existe" + cor + "rei no tabuleiro");
+	}
+	
+	private boolean testeXeque(Cor cor) {
+		//pegando a posição do rei:
+		Posição posicaoRei =  rei(cor).getPosicao_xadrez().convert_posic();
+		//lista das peças do oponente:
+		List<Pecas> pecaOponente = pecasNoTabul.stream().filter(x -> ((Peça_xadrez)x).getCor() == oponente (cor)).collect(Collectors.toList());
+		//varredura da lista para ver os movimentos possiveis:
+		for (Pecas p : pecaOponente) {
+			boolean [][] matriz = p.movim_possiveis();
+			if (matriz [posicaoRei.getLinhas()][posicaoRei.getColunas()]) {
+				return true;//rei está em xeque
+			}
+		}
+		return false;//rei não está em xeque
+	}
 	
 	//metodo que recebe as coordenadas do xadrez:
 	private void nova_peca(char coluna, int linha, Peça_xadrez peca) {
@@ -130,7 +188,6 @@ public class Partida_xadrez {
 		//sempre que uma peça for instanciada ela também será colocada na lista do tabuleiro:
 		pecasNoTabul.add(peca);
 	}
-	
 	
 	//metodo responsavel por iniciar a partida de xadrez, colocando as pecas no tabuleiro
 	private void iniciarPartida() {

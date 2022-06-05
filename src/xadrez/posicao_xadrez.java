@@ -28,7 +28,7 @@ public class posicao_xadrez {
 	}
 	//converter da posição padrão da matriz para formato como mostra no tabuleiro
 	protected static posicao_xadrez nova_posic(Posição posicao) {
-		return new posicao_xadrez ((char)('a' - posicao.getColunas()),8 - posicao.getLinhas());
+		return new posicao_xadrez ((char)('a' + posicao.getColunas()),8 - posicao.getLinhas());
 	}
 	@Override
 	public String toString() {

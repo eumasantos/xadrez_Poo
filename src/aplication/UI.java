@@ -63,6 +63,11 @@ public class UI {
 		System.out.println();
 		System.out.println("Rodada : " + partida_xadrez. getVez());//mostra na tela a vez
 		System.out.println("Esperando o jogador: " + partida_xadrez.getJogadorAtual());
+		System.out.println();
+		if (partida_xadrez.getXeque()) {
+			//System.out.print(ANSI_RED);
+			System.out.println("VOCÊ ESTÁ EM XEQUE!!!");
+		}
 	}
 	
 	public static void imprimiTabuleiro(Peça_xadrez[][]pecas) {

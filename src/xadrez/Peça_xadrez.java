@@ -19,6 +19,13 @@ public abstract class Peça_xadrez extends Pecas  {
 	public Cor getCor() {
 		return cor;
 	}	
+	
+	//metodo para retornar a posicao do xadrez
+	//pega posicção e converte para posicao de xadrez
+	public posicao_xadrez getPosicao_xadrez() {
+		return posicao_xadrez.nova_posic(posicao);
+	}
+	
 	/*operação será usada em todas as peças
 	 * Protegida pois será acessivel somente pelo mesmo pacote
 	 * verificar se existe uma peça adversaria nessa posicão
