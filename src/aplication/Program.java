@@ -1,6 +1,8 @@
 package aplication;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import xadrez.Exceção_xad;
@@ -15,12 +17,13 @@ public class Program {
 		//teste de movimento de peças
 		Scanner sc = new Scanner(System.in);
 		Partida_xadrez partida_xadrez = new Partida_xadrez();
+		List<Peça_xadrez> capturadas = new ArrayList<>();
 	
 		while (true) {
 			try {
 				UI.clearScreen();//para limpar a tela cada vez que executar o while
 			//	UI.imprimiTabuleiro(partida_xadrez.getPecas();
-				UI.imprimiPartida(partida_xadrez);
+				UI.imprimiPartida(partida_xadrez, capturadas);
 				System.out.println();
 				System.out.print("Origem: ");
 				posicao_xadrez origem = UI.lerPosicaoXadrez(sc);
@@ -33,7 +36,13 @@ public class Program {
 				System.out.print("Destino: ");
 				posicao_xadrez destino = UI.lerPosicaoXadrez(sc);
 				
+				//executa um movimento e reorna uma possivel peça capturada:
 				Peça_xadrez capturaPeca = partida_xadrez.performance_mov(origem, destino);
+			
+				//testa se a peça foi realmente capturada e acrscenta ela na lista de peças capturadas
+				if (capturaPeca != null) {
+					capturadas.add(capturaPeca);
+				}
 			}
 			//tratamento de exceções. Caso ocorra alguma exceção em exceção_xad, imprime msg na tela e aguarda o enter do usuário
 			catch (Exceção_xad e) {

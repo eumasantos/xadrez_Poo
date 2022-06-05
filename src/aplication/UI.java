@@ -1,7 +1,10 @@
 package aplication;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import xadrez.Cor;
 import xadrez.Partida_xadrez;
@@ -53,8 +56,10 @@ public class UI {
 			throw new InputMismatchException("Erro lendo a posição do xadrez. Valores válidos: são de A1 até H8");
 		}
 	}	
-	public static void imprimiPartida(Partida_xadrez partida_xadrez) {
+	public static void imprimiPartida(Partida_xadrez partida_xadrez, List<Peça_xadrez> capturadas) {
 		imprimiTabuleiro(partida_xadrez. getPecas());
+		System.out.println();
+		imprimi_pecas_captur(capturadas);
 		System.out.println();
 		System.out.println("Rodada : " + partida_xadrez. getVez());//mostra na tela a vez
 		System.out.println("Esperando o jogador: " + partida_xadrez.getJogadorAtual());
@@ -103,6 +108,23 @@ public class UI {
             }
         }
         System.out.print(" ");
+	}
+	//método para imprimir na tela a lista  das peças capturada:
+	private static void imprimi_pecas_captur(List<Peça_xadrez> capturadas) {
+		//Criação de 2 listas a partir da lista capturada do jogo/operação de filtragem
+		List <Peça_xadrez> branca = capturadas.stream().filter(x -> x.getCor() == Cor.BRANCA).collect(Collectors.toList());
+		List <Peça_xadrez> preta = capturadas.stream().filter(x -> x.getCor() == Cor.PRETA).collect(Collectors.toList());
+		System.out.println("Peças capturadas:");
+		System.out.print("Brancas: ");
+		System.out.print(ANSI_WHITE);
+		//codigo para impressão da matriz 
+		System.out.println(Arrays.toString(branca.toArray()));
+		System.out.print(ANSI_RESET);//resetar a cor da impressão
+		System.out.print("Pretas: ");
+		System.out.print(ANSI_YELLOW);
+		System.out.println(Arrays.toString(preta.toArray()));
+		System.out.print(ANSI_RESET);
+
 	}
 	/*private static void imprimiPeca(Peça_xadrez peca) {
 		if (peca == null) {

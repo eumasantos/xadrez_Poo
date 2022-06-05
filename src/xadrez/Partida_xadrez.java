@@ -1,5 +1,8 @@
 package xadrez;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tabuleiro.Pecas;
 import tabuleiro.Posição;
 import tabuleiro.Tabuleiro;
@@ -8,10 +11,15 @@ import xadrez.pecas.Torre;
 
 /* classe onde contem as regras do jogo*/
 public class Partida_xadrez {
+	
 	private Tabuleiro tabul;
 	private int vez;//define de quem é a vez de jogar
 	private Cor jogadorAtual;
 	
+	//declaração das listas para pelas no tabuleiro e peças capturadas:
+	private List<Pecas> pecasNoTabul = new ArrayList<>();
+	private List<Pecas> pecasCapturadas = new ArrayList<>();
+
 	//Construtor
 	public Partida_xadrez() {
 		tabul = new Tabuleiro(8,8);//criação da dimensao do tabuleiro
@@ -73,6 +81,15 @@ public class Partida_xadrez {
 		Pecas p = tabul.remover_Peca(origem);//retirando peça que estava na posicao de origem /peça = variavel p
 		Pecas capturaPeca = tabul.remover_Peca(destino);//remover possivel peça que esteja no destino. a peça se torna peça capturada
 		tabul.colocar_peca(p, destino);//colocando a peça retirada da origem apra posicao de destino
+		
+		/*se houver movimento, e o movimento capturar uma peça, a peça é retirada da lista do 
+		 * tabuleiro e adiciona na lista de peças capturadas
+		 */
+		if (capturaPeca != null) {
+			pecasNoTabul.remove(capturaPeca);
+			pecasCapturadas.add(capturaPeca);
+		}
+		
 		return capturaPeca;
 	}
 	
@@ -110,6 +127,8 @@ public class Partida_xadrez {
 	//metodo que recebe as coordenadas do xadrez:
 	private void nova_peca(char coluna, int linha, Peça_xadrez peca) {
 		tabul.colocar_peca(peca, new posicao_xadrez(coluna, linha).convert_posic());
+		//sempre que uma peça for instanciada ela também será colocada na lista do tabuleiro:
+		pecasNoTabul.add(peca);
 	}
 	
 	
