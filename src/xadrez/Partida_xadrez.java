@@ -105,7 +105,8 @@ public class Partida_xadrez {
 	
 	//operaçao de movimento da peça:
 	private Pecas operacaoMovimentoPeca(Posição origem, Posição destino) {
-		Pecas p = tabul.remover_Peca(origem);//retirando peça que estava na posicao de origem /peça = variavel p
+		Peça_xadrez p = (Peça_xadrez)tabul.remover_Peca(origem);//retirando peça que estava na posicao de origem /peça = variavel p
+		p.incrementarcontMov();
 		Pecas capturaPeca = tabul.remover_Peca(destino);//remover possivel peça que esteja no destino. a peça se torna peça capturada
 		tabul.colocar_peca(p, destino);//colocando a peça retirada da origem apra posicao de destino
 		
@@ -121,7 +122,8 @@ public class Partida_xadrez {
 	}
 	//metodo para desfazer movimento
 	private void desfazerMovim(Posição origem, Posição destino, Pecas capturaPeca ) {
-		Pecas p = tabul.remover_Peca(destino);//tira peça de destino
+		Peça_xadrez p = (Peça_xadrez)tabul.remover_Peca(destino);//tira peça de destino
+		p.decrementarcontMov();
 		tabul.colocar_peca(p, origem);//devolve para posição de origem
 		
 		//testa se a peça tinha sido capturada, se sim, volta para posição de destino

@@ -8,6 +8,7 @@ import tabuleiro.Tabuleiro;
 public abstract class Peça_xadrez extends Pecas  {
 	
 	private Cor cor;
+	private int contMov;
 
 	/*construtor que recebe tabuleiro e cor
 	 * tabuleiro repassa a chamada para o construtor da super classe: pecas*/
@@ -19,6 +20,17 @@ public abstract class Peça_xadrez extends Pecas  {
 	public Cor getCor() {
 		return cor;
 	}	
+	public int getContMov() {
+		return contMov;
+	}
+	
+	public void incrementarcontMov() {
+		contMov ++;
+	}
+	
+	public void decrementarcontMov() {
+		contMov --;
+	}
 	
 	//metodo para retornar a posicao do xadrez
 	//pega posicção e converte para posicao de xadrez
