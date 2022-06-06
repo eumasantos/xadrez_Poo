@@ -62,12 +62,21 @@ public class UI {
 		imprimi_pecas_captur(capturadas);
 		System.out.println();
 		System.out.println("Rodada : " + partida_xadrez. getVez());//mostra na tela a vez
-		System.out.println("Esperando o jogador: " + partida_xadrez.getJogadorAtual());
-		System.out.println();
-		if (partida_xadrez.getXeque()) {
-			//System.out.print(ANSI_RED);
-			System.out.println("VOCÊ ESTÁ EM XEQUE!!!");
+		
+		if (!partida_xadrez.getXequeMate()) {
+			System.out.println("Esperando o jogador: " + partida_xadrez.getJogadorAtual());
+			System.out.println();
+			if (partida_xadrez.getXeque()) {
+				//System.out.print(ANSI_RED);
+				System.out.println("VOCÊ ESTÁ EM XEQUE!!!");
+		}	
 		}
+			else {
+				System.out.println("XEQUE MATE!!");
+				System.out.println();
+				System.out.println("VENCEDOR: " + partida_xadrez.getJogadorAtual());
+				System.out.println();
+			}
 	}
 	
 	public static void imprimiTabuleiro(Peça_xadrez[][]pecas) {

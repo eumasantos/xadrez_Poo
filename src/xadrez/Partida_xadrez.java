@@ -17,6 +17,7 @@ public class Partida_xadrez {
 	private int vez;//define de quem é a vez de jogar
 	private Cor jogadorAtual;
 	private boolean Xeque;
+	private boolean xequeMate;
 	
 	//declaração das listas para pelas no tabuleiro e peças capturadas:
 	private List<Pecas> pecasNoTabul = new ArrayList<>();
@@ -41,6 +42,10 @@ public class Partida_xadrez {
 	
 	public boolean getXeque() {
 		return Xeque;
+	}
+	 
+	public boolean getXequeMate() {
+		return xequeMate;
 	}
 	
 	/*O método abaixo retorna uma matriz de pecas de xadrez correspondente 
@@ -88,7 +93,13 @@ public class Partida_xadrez {
 		//testar se o oponente se colocou em xeque
 		Xeque = (testeXeque(oponente(jogadorAtual))) ? true : false;
 		
+		if (testeXequeMate(oponente (jogadorAtual))) {
+			xequeMate = true;
+		}
+		else {
 		proximaVez();
+		}
+		
 		return (Peça_xadrez)capturaPeca;
 	}
 	
@@ -166,7 +177,7 @@ public class Partida_xadrez {
 		//se não encontrar nenhum rei, lança a seguinte exceção:
 		throw new IllegalStateException("Não existe" + cor + "rei no tabuleiro");
 	}
-	
+
 	private boolean testeXeque(Cor cor) {
 		//pegando a posição do rei:
 		Posição posicaoRei =  rei(cor).getPosicao_xadrez().convert_posic();
@@ -181,7 +192,34 @@ public class Partida_xadrez {
 		}
 		return false;//rei não está em xeque
 	}
-	
+	//metodo para o xeque mate
+	private boolean testeXequeMate(Cor cor) {
+		//teste para ver se está em xeque
+		if (!testeXeque(cor)) {
+			return false;
+		}
+		//lista de peças da mesma cor
+		List<Pecas> list = pecasNoTabul.stream().filter(x -> ((Peça_xadrez)x).getCor() == cor).collect(Collectors.toList());
+		//percorrer todas as peças da lista e testar se tem alguma peça que tire do xeque
+		for (Pecas p : list) {
+			boolean [][] matriz = p.movim_possiveis();
+			for (int i=0; i<tabul.getLinhas(); i++) {
+				for (int j=0; j<tabul.getColunas(); j++) {
+					if (matriz [i][j]) {
+						Posição origem = ((Peça_xadrez)p).getPosicao_xadrez().convert_posic();
+						Posição destino = new Posição (i,j);
+						Pecas capturaPeca = operacaoMovimentoPeca(origem, destino);
+						boolean testeXeque = testeXeque (cor);
+						desfazerMovim (origem, destino, capturaPeca);
+						if (!testeXeque) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 	//metodo que recebe as coordenadas do xadrez:
 	private void nova_peca(char coluna, int linha, Peça_xadrez peca) {
 		tabul.colocar_peca(peca, new posicao_xadrez(coluna, linha).convert_posic());
@@ -192,32 +230,24 @@ public class Partida_xadrez {
 	//metodo responsavel por iniciar a partida de xadrez, colocando as pecas no tabuleiro
 	private void iniciarPartida() {
 		
-		nova_peca('b', 6, new Torre(tabul, Cor.BRANCA));//colcando uma nova peça em determinada posicao
-		nova_peca('e', 8, new Rei(tabul, Cor.PRETA)); 
+		//nova_peca('b', 6, new Torre(tabul, Cor.BRANCA));//colcando uma nova peça em determinada posicao
+		//nova_peca('e', 8, new Rei(tabul, Cor.PRETA)); 
+	//	nova_peca('e', 1, new Rei(tabul, Cor.BRANCA));
+		//nova_peca('c', 1, new Torre(tabul, Cor.BRANCA));
+		//nova_peca('c', 2, new Torre(tabul, Cor.BRANCA));
+		//nova_peca('d', 2, new Torre(tabul, Cor.BRANCA));
+		//nova_peca('e', 2, new Torre(tabul, Cor.BRANCA));
+		//nova_peca('d', 1, new Rei(tabul, Cor.BRANCA));
+		//nova_peca('c', 7, new Torre(tabul, Cor.PRETA));
+		//nova_peca('c', 8, new Torre(tabul, Cor.PRETA));
+		//nova_peca('d', 7, new Torre(tabul, Cor.PRETA));
+		//nova_peca('e', 7, new Torre(tabul, Cor.PRETA));
+		nova_peca('h', 7, new Torre(tabul, Cor.BRANCA));
+		nova_peca('d', 1, new Torre(tabul, Cor.BRANCA));
 		nova_peca('e', 1, new Rei(tabul, Cor.BRANCA));
-		nova_peca('c', 1, new Torre(tabul, Cor.BRANCA));
-		nova_peca('c', 2, new Torre(tabul, Cor.BRANCA));
-		nova_peca('d', 2, new Torre(tabul, Cor.BRANCA));
-		nova_peca('e', 2, new Torre(tabul, Cor.BRANCA));
-		nova_peca('d', 1, new Rei(tabul, Cor.BRANCA));
-		nova_peca('c', 7, new Torre(tabul, Cor.PRETA));
-		nova_peca('c', 8, new Torre(tabul, Cor.PRETA));
-		nova_peca('d', 7, new Torre(tabul, Cor.PRETA));
-		nova_peca('e', 7, new Torre(tabul, Cor.PRETA));
-		//nova_peca('d', 8, new Rei(tabul, Cor.BLACK));
-		//nova_peca('e', 1, new Rei(tabul, Cor.WHITE));
-		//nova_peca('c', 1, new Torre(tabul, Cor.WHITE));
-		//nova_peca('c', 2, new Torre(tabul, Cor.WHITE));
-		//nova_peca('d', 2, new Torre(tabul, Cor.WHITE));
-		//nova_peca('e', 2, new Torre(tabul, Cor.WHITE));
-		//nova_peca('e', 1, new Torre(tabul, Cor.WHITE));
-		//nova_peca('d', 1, new Rei(tabul, Cor.WHITE));
-		//nova_peca('c', 7, new Torre(tabul, Cor.BLACK));
-		//nova_peca('c', 8, new Torre(tabul, Cor.BLACK));
-		//nova_peca('d', 7, new Torre(tabul, Cor.BLACK));
-		//nova_peca('e', 7, new Torre(tabul, Cor.BLACK));
-		//nova_peca('e', 8, new Torre(tabul, Cor.BLACK));
-		//nova_peca('d', 8, new Rei(tabul, Cor.BLACK));
+	
+		nova_peca('b', 8, new Torre(tabul, Cor.PRETA));
+		nova_peca('a', 8, new Rei(tabul, Cor.PRETA));	
 
 	}
 		

@@ -19,7 +19,7 @@ public class Program {
 		Partida_xadrez partida_xadrez = new Partida_xadrez();
 		List<Peça_xadrez> capturadas = new ArrayList<>();
 	
-		while (true) {
+		while (!partida_xadrez.getXequeMate()) {
 			try {
 				UI.clearScreen();//para limpar a tela cada vez que executar o while
 			//	UI.imprimiTabuleiro(partida_xadrez.getPecas();
@@ -55,5 +55,7 @@ public class Program {
 				sc.nextLine();//aguardar o ENTER
 			}
 		}	
+		UI.clearScreen();
+		UI.imprimiPartida(partida_xadrez,capturadas);
 	}
 }
