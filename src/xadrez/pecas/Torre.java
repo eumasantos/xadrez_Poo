@@ -32,7 +32,7 @@ public class Torre extends Peça_xadrez{
 			p.setLinhas(p.getLinhas()-1);//linha andando para cima	
 		}
 		//testar se existe casa e se essa capa possui peça adversária
-		if (getTabul().existe_posicao(p) && existePecaAdvesaria(p)) {
+		if (getTabul().existe_posicao(p) && existePecaAdversaria(p)) {
 			matriz [p.getLinhas()][p.getColunas()] = true;
 		}
 		
@@ -45,7 +45,7 @@ public class Torre extends Peça_xadrez{
 			p.setColunas(p.getColunas()-1);//linha andando para cima	
 		}
 		//testar se existe casa e se essa capa possui peça adversária
-		if (getTabul().existe_posicao(p) && existePecaAdvesaria(p)) {
+		if (getTabul().existe_posicao(p) && existePecaAdversaria(p)) {
 			matriz [p.getLinhas()][p.getColunas()] = true;
 		}
 		
@@ -58,7 +58,7 @@ public class Torre extends Peça_xadrez{
 			p.setColunas(p.getColunas()+1);//linha andando para cima	
 		}
 		//testar se existe casa e se essa capa possui peça adversária
-		if (getTabul().existe_posicao(p) && existePecaAdvesaria(p)) {
+		if (getTabul().existe_posicao(p) && existePecaAdversaria(p)) {
 			matriz [p.getLinhas()][p.getColunas()] = true;
 		}
 		
@@ -71,7 +71,7 @@ public class Torre extends Peça_xadrez{
 			p.setLinhas(p.getLinhas()+1);//linha andando para cima	
 		}
 		//testar se existe casa e se essa capa possui peça adversária
-		if (getTabul().existe_posicao(p) && existePecaAdvesaria(p)) {
+		if (getTabul().existe_posicao(p) && existePecaAdversaria(p)) {
 			matriz [p.getLinhas()][p.getColunas()] = true;
 		}
 		

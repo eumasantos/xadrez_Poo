@@ -42,7 +42,7 @@ public abstract class Peça_xadrez extends Pecas  {
 	 * Protegida pois será acessivel somente pelo mesmo pacote
 	 * verificar se existe uma peça adversaria nessa posicão
 	*/
-	protected boolean existePecaAdvesaria(Posição posicao) {
+	protected boolean existePecaAdversaria(Posição posicao) {
 		Peça_xadrez p = (Peça_xadrez)getTabul().peca(posicao);//pega peça
 		return p!=null && p.getCor()!= cor;//testa se a peça pega nessa posição é de cor diferente da peça do jogador(adversária) 
 	}

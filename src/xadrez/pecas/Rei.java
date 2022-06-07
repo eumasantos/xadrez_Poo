@@ -12,7 +12,7 @@ public class Rei extends Peça_xadrez{
 		// TODO Auto-generated constructor stub
 	}
 	
-	//convertendo uma torre para string
+	//convertendo um rei para string
 		@Override
 		public String toString() {
 			return "R";
