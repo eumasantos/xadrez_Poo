@@ -9,7 +9,6 @@ public class Rei extends Peça_xadrez{
 
 	public Rei(Tabuleiro tabul, Cor cor) {
 		super(tabul, cor);
-		// TODO Auto-generated constructor stub
 	}
 	
 	//convertendo um rei para string
