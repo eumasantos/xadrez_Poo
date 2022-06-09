@@ -8,6 +8,7 @@ import tabuleiro.Pecas;
 import tabuleiro.Posição;
 import tabuleiro.Tabuleiro;
 import xadrez.pecas.Bispo;
+import xadrez.pecas.Cavalo;
 import xadrez.pecas.Peao;
 import xadrez.pecas.Rei;
 import xadrez.pecas.Torre;
@@ -247,9 +248,11 @@ public class Partida_xadrez {
 		//nova_peca('d', 7, new Torre(tabul, Cor.PRETA));
 		//nova_peca('e', 7, new Torre(tabul, Cor.PRETA));
 		nova_peca('a', 1, new Torre(tabul, Cor.BRANCA));
+		nova_peca('b', 1, new Cavalo(tabul, Cor.BRANCA));
 		nova_peca('c', 1, new Bispo(tabul, Cor.BRANCA));
 		nova_peca('e', 1, new Rei(tabul, Cor.BRANCA));
 		nova_peca('f', 1, new Bispo(tabul, Cor.BRANCA));
+		nova_peca('g', 1, new Cavalo(tabul, Cor.BRANCA));
 		nova_peca('h', 1, new Torre(tabul, Cor.BRANCA));
 		nova_peca('a', 2, new Peao(tabul, Cor.BRANCA));
 		nova_peca('b', 2, new Peao(tabul, Cor.BRANCA));
@@ -261,9 +264,11 @@ public class Partida_xadrez {
 		nova_peca('h', 2, new Peao(tabul, Cor.BRANCA));
 		
 		nova_peca('a', 8, new Torre(tabul, Cor.PRETA));
+		nova_peca('b', 8, new Cavalo(tabul, Cor.PRETA));
 		nova_peca('c', 8, new Bispo(tabul, Cor.PRETA));
 		nova_peca('e', 8, new Rei(tabul, Cor.PRETA));
 		nova_peca('f', 8, new Bispo(tabul, Cor.PRETA));
+		nova_peca('g', 8, new Cavalo(tabul, Cor.PRETA));
 		nova_peca('h', 8, new Torre(tabul, Cor.PRETA));
 		nova_peca('a', 7, new Peao(tabul, Cor.PRETA));
 		nova_peca('b', 7, new Peao(tabul, Cor.PRETA));
