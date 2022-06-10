@@ -122,6 +122,27 @@ public class Partida_xadrez {
 			pecasCapturadas.add(capturaPeca);
 		}
 		
+		//movimento especial roque na torre do lado do rei
+		//para descobrir se o movimento foi um roque/rei
+		if(p instanceof Rei && destino.getColunas() == origem.getColunas() + 2 ) {
+			Posição origemT = new Posição(origem.getLinhas(), origem.getColunas() + 3);
+			Posição destinoT = new Posição(origem.getLinhas(), origem.getColunas() + 1);
+			Peça_xadrez torre = (Peça_xadrez)tabul.remover_Peca(origemT);//retira de onde ela estiver
+			tabul.colocar_peca(torre, destinoT);//coloca na posição de destino
+			torre.incrementarcontMov();//incrementa a quantidade de movimentos da torre
+
+		}
+		/*movimento especial roque na torre do lado da rainha 
+		(muda apenas a posição de origem e destino em relação ao roque do rei*/
+		//para descobrir se o movimento foi um roque/rainha
+		if(p instanceof Rei && destino.getColunas() == origem.getColunas() - 2 ) {
+			Posição origemT = new Posição(origem.getLinhas(), origem.getColunas() - 4);
+			Posição destinoT = new Posição(origem.getLinhas(), origem.getColunas() - 1);
+			Peça_xadrez torre = (Peça_xadrez)tabul.remover_Peca(origemT);
+			tabul.colocar_peca(torre, destinoT);
+			torre.incrementarcontMov();
+		}
+		
 		return capturaPeca;
 	}
 	//metodo para desfazer movimento
@@ -135,6 +156,27 @@ public class Partida_xadrez {
 			tabul.colocar_peca(capturaPeca, destino);//volta a peça para o tabuleiro na posição de destino
 			pecasCapturadas.remove(capturaPeca);//tirar a peça da lista de capturadas e colocar na lista do tabuleiro:
 			pecasNoTabul.add(capturaPeca);
+		}
+		
+		//desfazer movimento especial roque na torre do lado do rei
+		//para descobrir se o movimento foi um roque/rei
+		if(p instanceof Rei && destino.getColunas() == origem.getColunas() + 2 ) {
+			Posição origemT = new Posição(origem.getLinhas(), origem.getColunas() + 3);
+			Posição destinoT = new Posição(origem.getLinhas(), origem.getColunas() + 1);
+			Peça_xadrez torre = (Peça_xadrez)tabul.remover_Peca(destinoT);//retira de onde ela estiver
+			tabul.colocar_peca(torre, origemT);//coloca na posição de destino
+			torre.decrementarcontMov();//incrementa a quantidade de movimentos da torre
+
+		}
+		/*desfazer movimento especial roque na torre do lado da rainha 
+		(muda apenas a posição de origem e destino em relação ao roque do rei*/
+		//para descobrir se o movimento foi um roque/rainha
+		if(p instanceof Rei && destino.getColunas() == origem.getColunas() - 2 ) {
+			Posição origemT = new Posição(origem.getLinhas(), origem.getColunas() - 4);
+			Posição destinoT = new Posição(origem.getLinhas(), origem.getColunas() - 1);
+			Peça_xadrez torre = (Peça_xadrez)tabul.remover_Peca(destinoT);
+			tabul.colocar_peca(torre, origemT);
+			torre.decrementarcontMov();
 		}
 	}
 	
@@ -252,7 +294,7 @@ public class Partida_xadrez {
 		nova_peca('b', 1, new Cavalo(tabul, Cor.BRANCA));
 		nova_peca('c', 1, new Bispo(tabul, Cor.BRANCA));
 		nova_peca('d', 1, new Rainha(tabul, Cor.BRANCA));
-		nova_peca('e', 1, new Rei(tabul, Cor.BRANCA));
+		nova_peca('e', 1, new Rei(tabul, Cor.BRANCA, this));
 		nova_peca('f', 1, new Bispo(tabul, Cor.BRANCA));
 		nova_peca('g', 1, new Cavalo(tabul, Cor.BRANCA));
 		nova_peca('h', 1, new Torre(tabul, Cor.BRANCA));
@@ -269,7 +311,7 @@ public class Partida_xadrez {
 		nova_peca('b', 8, new Cavalo(tabul, Cor.PRETA));
 		nova_peca('c', 8, new Bispo(tabul, Cor.PRETA));
 		nova_peca('d', 8, new Rainha(tabul, Cor.PRETA));
-		nova_peca('e', 8, new Rei(tabul, Cor.PRETA));
+		nova_peca('e', 8, new Rei(tabul, Cor.PRETA, this));
 		nova_peca('f', 8, new Bispo(tabul, Cor.PRETA));
 		nova_peca('g', 8, new Cavalo(tabul, Cor.PRETA));
 		nova_peca('h', 8, new Torre(tabul, Cor.PRETA));
