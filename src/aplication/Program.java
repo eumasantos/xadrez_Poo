@@ -43,6 +43,17 @@ public class Program {
 				if (capturaPeca != null) {
 					capturadas.add(capturaPeca);
 				}
+				//usuario escolhe peça para ser promovida 
+				if (partida_xadrez.getPromocao() != null) {
+					System.out.println("VOCÊ PODE PROMOVER UMA PEÇA!");
+					System.out.println ("Para Bispo - Pressione B");
+					System.out.println ("Para Cavalo - Pressione C");
+					System.out.println ("Para Torre - Pressione T");
+					System.out.println ("Para Rainha - Pressione Q");
+					System.out.print("Digite a letra da peça para ser promovida:");
+					String type = sc.nextLine();
+					partida_xadrez.substituirPecaPromovida(type);
+				}
 			}
 			//tratamento de exceções. Caso ocorra alguma exceção em exceção_xad, imprime msg na tela e aguarda o enter do usuário
 			catch (Exceção_xad e) {

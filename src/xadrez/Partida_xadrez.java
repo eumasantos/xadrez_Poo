@@ -1,5 +1,6 @@
 package xadrez;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,8 +23,8 @@ public class Partida_xadrez {
 	private Cor jogadorAtual;
 	private boolean Xeque;
 	private boolean xequeMate;
-	private Peça_xadrez vuneravel_enPassant;//propriedade da jogada en passant. Começa com nulo (não há ainda nenhum apeça vulnerável a essa jogada)
-	
+	private Peça_xadrez vuneravel_enPassant;//propriedade da jogada en passant. Começa com nulo (não há ainda nenhuma peça vulnerável a essa jogada)
+	private Peça_xadrez promocao;////propriedade da jogada promocao. Começa com nulo (não há ainda nenhum apeça vulnerável a essa jogada)
 	
 	//declaração das listas para pelas no tabuleiro e peças capturadas:
 	private List<Pecas> pecasNoTabul = new ArrayList<>();
@@ -56,6 +57,10 @@ public class Partida_xadrez {
 	
 	public Peça_xadrez getVuneravel_enPassant() {
 		return vuneravel_enPassant;
+	}
+	
+	public Peça_xadrez getPromocao() {
+		return promocao;
 	}
 	
 	/*O método abaixo retorna uma matriz de pecas de xadrez correspondente 
@@ -103,6 +108,18 @@ public class Partida_xadrez {
 		//declaração de variavel para o em passant
 		Peça_xadrez pecaMovida = (Peça_xadrez)tabul.peca(destino);
 		
+		//movimento de jogada"promocao"
+		//Antes do xeque  
+		promocao = null;
+		if (pecaMovida instanceof Peao) {
+			if ((pecaMovida.getCor() == Cor.BRANCA && destino.getLinhas() == 0 || pecaMovida.getCor() == Cor.PRETA && destino.getLinhas() == 7)) {
+				promocao = (Peça_xadrez)tabul.peca(destino);//joga o peao para a variavel promocao
+				promocao = substituirPecaPromovida("Q");//começa trocando pela rainha
+			}
+		}
+		
+		
+		
 		//testar se o oponente se colocou em xeque
 		Xeque = (testeXeque(oponente(jogadorAtual))) ? true : false;
 		
@@ -123,6 +140,34 @@ public class Partida_xadrez {
 		}	
 		
 		return (Peça_xadrez)capturaPeca;
+	}
+	
+	//metodo para trocar a peça removida por outra
+	public Peça_xadrez substituirPecaPromovida (String type) {
+		if (promocao == null) {
+			throw new IllegalStateException("Não há peça para ser removida");
+		}
+		if (!type.equals ("8") && !type.equals("C") && !type.equals("T") && !type.equals("Q")) {
+			throw new InvalidParameterException("Letra inválida para promoção!");
+		}
+		Posição pos = promocao.getPosicao_xadrez().convert_posic();
+		Pecas p = tabul.remover_Peca(pos);
+		pecasNoTabul.remove(p);
+		
+		Peça_xadrez novaPeca = novaPeca(type, promocao.getCor());
+		tabul.colocar_peca(novaPeca, pos);
+		pecasNoTabul.add(novaPeca);
+		
+		return novaPeca;
+		
+	}
+	//método auxiliar para instanciar a peça especifica
+	private Peça_xadrez novaPeca(String type, Cor cor) {
+		if (type.equals("B")) return new Bispo(tabul, cor);
+		if (type.equals("C")) return new Cavalo(tabul, cor);
+		if (type.equals("Q")) return new Rainha(tabul, cor);
+		return new Torre(tabul, cor);
+		
 	}
 	
 	//operaçao de movimento da peça:

@@ -64,7 +64,7 @@ public class UI {
 		System.out.println("Rodada : " + partida_xadrez. getVez());//mostra na tela a vez
 		
 		if (!partida_xadrez.getXequeMate()) {
-			System.out.println("Esperando o jogador: " + partida_xadrez.getJogadorAtual());
+			System.out.println("Esperando o jogador de peça: " + partida_xadrez.getJogadorAtual());
 			System.out.println();
 			if (partida_xadrez.getXeque()) {
 				//System.out.print(ANSI_RED);
