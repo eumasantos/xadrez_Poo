@@ -51,7 +51,16 @@ public class Program {
 					System.out.println ("Para Torre - Pressione T");
 					System.out.println ("Para Rainha - Pressione Q");
 					System.out.print("Digite a letra da peça para ser promovida:");
-					String type = sc.nextLine();
+					String type = sc.nextLine().toUpperCase();
+					while (!type.equals ("8") && !type.equals("C") && !type.equals("T") && !type.equals("Q")) {
+						System.out.println("LETRA INVÁLIDA. DIGITE NOVAMENTE!");
+						System.out.println ("Para Bispo - Pressione B");
+						System.out.println ("Para Cavalo - Pressione C");
+						System.out.println ("Para Torre - Pressione T");
+						System.out.println ("Para Rainha - Pressione Q");
+						System.out.print("Digite a letra da peça para ser promovida:");
+						type = sc.nextLine().toUpperCase();
+					}
 					partida_xadrez.substituirPecaPromovida(type);
 				}
 			}

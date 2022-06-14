@@ -1,6 +1,5 @@
 package xadrez;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -148,8 +147,10 @@ public class Partida_xadrez {
 			throw new IllegalStateException("Não há peça para ser removida");
 		}
 		if (!type.equals ("8") && !type.equals("C") && !type.equals("T") && !type.equals("Q")) {
-			throw new InvalidParameterException("Letra inválida para promoção!");
+			//throw new InvalidParameterException("Letra inválida para promoção!");
+			return promocao;
 		}
+		
 		Posição pos = promocao.getPosicao_xadrez().convert_posic();
 		Pecas p = tabul.remover_Peca(pos);
 		pecasNoTabul.remove(p);
