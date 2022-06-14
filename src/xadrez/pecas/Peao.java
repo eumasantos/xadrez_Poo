@@ -3,12 +3,16 @@ package xadrez.pecas;
 import tabuleiro.Posição;
 import tabuleiro.Tabuleiro;
 import xadrez.Cor;
+import xadrez.Partida_xadrez;
 import xadrez.Peça_xadrez;
 
 public class Peao extends Peça_xadrez {
+	
+	private Partida_xadrez partida_xadrez;//dependencia para a classe partida
 
-	public Peao(Tabuleiro tabul, Cor cor) {
+	public Peao(Tabuleiro tabul, Cor cor, Partida_xadrez partida_xadrez) {
 		super(tabul, cor);
+		this.partida_xadrez = partida_xadrez;
 	
 	}
 	
@@ -53,6 +57,17 @@ public class Peao extends Peça_xadrez {
 			if (getTabul().existe_posicao(p) && existePecaAdversaria(p)) {
 				matriz [p.getLinhas()][p.getColunas()] = true;
 			}
+			//Código para movimento de em passant peças brancas:
+			if (posicao.getLinhas() == 3) {
+				Posição esquerda = new Posição(posicao.getLinhas(),posicao.getColunas() - 1);
+				if (getTabul().existe_posicao(esquerda) && existePecaAdversaria(esquerda) && getTabul().peca(esquerda) == partida_xadrez.getVuneravel_enPassant()) {
+					matriz[esquerda.getLinhas() - 1][esquerda.getColunas()] = true;
+				}
+				Posição direita = new Posição(posicao.getLinhas(),posicao.getColunas() + 1);
+				if (getTabul().existe_posicao(direita) && existePecaAdversaria(direita) && getTabul().peca(direita) == partida_xadrez.getVuneravel_enPassant()) {
+					matriz[direita.getLinhas() - 1][direita.getColunas()] = true;
+				}
+			}
 		}
 		//peão preto
 		else {
@@ -82,6 +97,18 @@ public class Peao extends Peça_xadrez {
 			/* se a posicao existe e tem uma peça adversária no local pode mover para lá*/
 			if (getTabul().existe_posicao(p) && existePecaAdversaria(p)) {
 				matriz [p.getLinhas()][p.getColunas()] = true;
+			}
+			
+			//Código para movimento de em passant peças pretas:
+			if (posicao.getLinhas() == 4) {
+				Posição esquerda = new Posição(posicao.getLinhas(),posicao.getColunas() - 1);
+				if (getTabul().existe_posicao(esquerda) && existePecaAdversaria(esquerda) && getTabul().peca(esquerda) == partida_xadrez.getVuneravel_enPassant()) {
+					matriz[esquerda.getLinhas() + 1][esquerda.getColunas()] = true;
+				}
+				Posição direita = new Posição(posicao.getLinhas(),posicao.getColunas() + 1);
+				if (getTabul().existe_posicao(direita) && existePecaAdversaria(direita) && getTabul().peca(direita) == partida_xadrez.getVuneravel_enPassant()) {
+					matriz[direita.getLinhas() + 1][direita.getColunas()] = true;
+				}
 			}
 		}
 		

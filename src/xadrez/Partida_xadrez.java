@@ -22,6 +22,8 @@ public class Partida_xadrez {
 	private Cor jogadorAtual;
 	private boolean Xeque;
 	private boolean xequeMate;
+	private Peça_xadrez vuneravel_enPassant;//propriedade da jogada en passant. Começa com nulo (não há ainda nenhum apeça vulnerável a essa jogada)
+	
 	
 	//declaração das listas para pelas no tabuleiro e peças capturadas:
 	private List<Pecas> pecasNoTabul = new ArrayList<>();
@@ -50,6 +52,10 @@ public class Partida_xadrez {
 	 
 	public boolean getXequeMate() {
 		return xequeMate;
+	}
+	
+	public Peça_xadrez getVuneravel_enPassant() {
+		return vuneravel_enPassant;
 	}
 	
 	/*O método abaixo retorna uma matriz de pecas de xadrez correspondente 
@@ -94,6 +100,9 @@ public class Partida_xadrez {
 			desfazerMovim(origem, destino, capturaPeca);
 			throw new Exceção_xad("Você não pode se colocar em xeque!");
 		}
+		//declaração de variavel para o em passant
+		Peça_xadrez pecaMovida = (Peça_xadrez)tabul.peca(destino);
+		
 		//testar se o oponente se colocou em xeque
 		Xeque = (testeXeque(oponente(jogadorAtual))) ? true : false;
 		
@@ -103,6 +112,15 @@ public class Partida_xadrez {
 		else {
 		proximaVez();
 		}
+		
+		/*testar se a peça movida foi um peão que moveu 2 casas, se sim esse peão
+		 * está vulnerável a en passant */
+		if (pecaMovida instanceof Peao && (destino.getLinhas() == origem.getLinhas() - 2 || destino.getLinhas() == origem.getLinhas() + 2)) {
+			vuneravel_enPassant = pecaMovida;
+		}
+		else {
+			vuneravel_enPassant = null;
+		}	
 		
 		return (Peça_xadrez)capturaPeca;
 	}
@@ -143,6 +161,26 @@ public class Partida_xadrez {
 			torre.incrementarcontMov();
 		}
 		
+		/*Movimento em passant
+		 * sempre que uma peça for movida, testar se foi en passant
+		 */
+		if (p instanceof Peao) {
+			//se o peão andou na diagonal e não capturou peça, significa que foi em passant
+			if (origem.getColunas() != destino.getColunas() && capturaPeca == null) {
+				Posição peaoPosicao;
+				if (p.getCor() == Cor.BRANCA) {
+					peaoPosicao = new Posição(destino.getLinhas() + 1, destino.getColunas());
+				}
+				else {
+					peaoPosicao = new Posição(destino.getLinhas() - 1, destino.getColunas());
+				}
+				capturaPeca = tabul.remover_Peca(peaoPosicao);
+				pecasCapturadas.add(capturaPeca);//adicionando na lista de peças capturadas
+				pecasNoTabul.remove(capturaPeca);//removendo a peça capturada do tabuleiro
+				
+			}
+		}
+		
 		return capturaPeca;
 	}
 	//metodo para desfazer movimento
@@ -178,6 +216,24 @@ public class Partida_xadrez {
 			tabul.colocar_peca(torre, origemT);
 			torre.decrementarcontMov();
 		}
+		
+		/*Movimento em passant
+		 * sempre que uma peça for movida, verificar se foi peão 
+		 */
+		if (p instanceof Peao) {
+			//se o peão andou na diagonal e não capturou peça, significa que foi em passant
+			if (origem.getColunas() != destino.getColunas() && capturaPeca == vuneravel_enPassant) {
+				Peça_xadrez peao = (Peça_xadrez)tabul.remover_Peca(destino);//retirar a peça do local incorreto
+				Posição peaoPosicao;
+				if (p.getCor() == Cor.BRANCA) {
+					peaoPosicao = new Posição(3,destino.getLinhas());
+				}
+				else {
+					peaoPosicao = new Posição(4,destino.getLinhas());
+				}
+				tabul.colocar_peca(peao, peaoPosicao);			
+			}
+		}		
 	}
 	
 	//implementação da operaçao de validação de origem:
@@ -298,14 +354,14 @@ public class Partida_xadrez {
 		nova_peca('f', 1, new Bispo(tabul, Cor.BRANCA));
 		nova_peca('g', 1, new Cavalo(tabul, Cor.BRANCA));
 		nova_peca('h', 1, new Torre(tabul, Cor.BRANCA));
-		nova_peca('a', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('b', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('c', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('d', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('e', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('f', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('g', 2, new Peao(tabul, Cor.BRANCA));
-		nova_peca('h', 2, new Peao(tabul, Cor.BRANCA));
+		nova_peca('a', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('b', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('c', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('d', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('e', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('f', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('g', 2, new Peao(tabul, Cor.BRANCA, this));
+		nova_peca('h', 2, new Peao(tabul, Cor.BRANCA, this));
 		
 		nova_peca('a', 8, new Torre(tabul, Cor.PRETA));
 		nova_peca('b', 8, new Cavalo(tabul, Cor.PRETA));
@@ -315,14 +371,14 @@ public class Partida_xadrez {
 		nova_peca('f', 8, new Bispo(tabul, Cor.PRETA));
 		nova_peca('g', 8, new Cavalo(tabul, Cor.PRETA));
 		nova_peca('h', 8, new Torre(tabul, Cor.PRETA));
-		nova_peca('a', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('b', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('c', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('d', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('e', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('f', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('g', 7, new Peao(tabul, Cor.PRETA));
-		nova_peca('h', 7, new Peao(tabul, Cor.PRETA));
+		nova_peca('a', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('b', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('c', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('d', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('e', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('f', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('g', 7, new Peao(tabul, Cor.PRETA, this));
+		nova_peca('h', 7, new Peao(tabul, Cor.PRETA, this));
 		
 		
 
